@@ -1,0 +1,63 @@
+server:
+  port: 8092
+spring:
+  application:
+    name: spring-cloud-alibaba-pro
+##############################################################################mysql数据库配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/yang?useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: "123456"
+    driver-class-name: com.mysql.jdbc.Driver
+##############################################################################zipkin链路追踪配置
+  zipkin:
+    base-url: http://localhost:9411
+    sender:
+      type: web
+  cloud:
+#####################################################################################naocs 配置
+    nacos:
+      server-addr: 127.0.0.1:8848 # nacos ?????
+      username: nacos
+      password: nacos
+########################################################################springcloud stream 配置
+    stream:
+      bindings:
+        output-channel:
+          destination: topic
+          binder: rabbit
+        input-channel:
+          destination: topic
+          binder: rabbit
+          group: my-message-group
+########################################################################rabbitMq 配置
+  #配置rabbitMq 服务器
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+########################################################################远程调用feign 配置
+feign:
+  hystrix:
+    enabled: true
+  client:
+    config:
+      default: # default?????
+        loggerLevel: BASIC # ?????BASIC????????????
+  httpclient:
+    enabled: true # ??feign?HttpClient???
+    max-connections: 200 # ??????
+    max-connections-per-route: 50 # ??????????
+########################################################################mybatis 配置
+mybatis:
+  type-aliases-package: com.example.privode.pojo
+  configuration:
+    map-underscore-to-camel-case: true
+java:
+  lang:
+    IllegalStateException:
+
+#userservice:
+#  ribbon:
+#    NFLoadBalancerRuleClassName: com.alibaba.cloud.nacos.ribbon.NacosRule # ??????

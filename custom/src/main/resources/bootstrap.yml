@@ -1,0 +1,72 @@
+server:
+  port: 8093
+spring:
+  application:
+    name: spring-cloud-alibaba-custom
+##############################################################################mysql数据库配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/yang?useSSL=false
+    username: root
+    password: "123456"
+    driver-class-name: com.mysql.jdbc.Driver
+##############################################################################redis数据库配置
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    pool:
+      max-active:8
+    timeout: 30000
+##############################################################################zipkin链路追踪配置
+  zipkin:
+    base-url: http://localhost:9411
+    discovery-client-enabled: false
+    sender:
+      type: web
+  cloud:
+#####################################################################################naocs 配置
+    nacos:
+      server-addr: 127.0.0.1:8848 # nacos 服务地址
+      username: nacos
+      password: nacos
+########################################################################springcloud stream 配置
+    stream:
+      bindings:
+        output-channel:
+          destination: topic
+          binder: rabbit
+        input-channel:
+          destination: topic
+          binder: rabbit
+          group: my-message-group
+
+########################################################################rabbitMq 配置
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+
+########################################################################远程调用feign 配置
+feign:
+#  hystrix:
+#    enabled: true
+  client:
+    config:
+      default: # default?????
+        loggerLevel: BASIC # ?????BASIC????????????
+  httpclient:
+    enabled: true # ??feign?HttpClient???
+    max-connections: 200 # ??????
+    max-connections-per-route: 50 # ??????????
+  sentinel:
+    enabled: false
+## 暴露监控端点
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: '*'
+
+#userservice:
+#  ribbon:
+#    NFLoadBalancerRuleClassName: com.alibaba.cloud.nacos.ribbon.NacosRule # ??????

@@ -1,0 +1,50 @@
+server:
+  port: 10010 # 端口号
+spring:
+  application:
+    name: gateway # 服务名称
+##############################################################################zipkin链路追踪配置
+  zipkin:
+    base-url: http://localhost:9411
+    discovery-client-enabled: false
+    sender:
+      type: web
+
+  cloud:
+#####################################################################################naocs 配置
+    nacos:
+      server-addr: 127.0.0.1:8848 # nacos 地址
+      username: "nacos"
+      password: "nacos"
+#####################################################################################gateway 配置
+    gateway:
+      routes: # 路由
+        - id: spring-cloud-alibaba-custom # 路由名字
+          # uri: http://127.0.0.1:8081 # ??????? http??????
+          uri: lb://spring-cloud-alibaba-custom # 负载均衡服务名称
+          predicates: # 断言
+            - Path=/user/**
+        - id: spring-cloud-alibaba-pro # 路由名字
+          # uri: http://127.0.0.1:8081 # ??????? http??????
+          uri: lb://spring-cloud-alibaba-pro # 负载均衡服务名称
+          predicates: # 断言
+            - Path=/nacos-producer/**
+      #      default-filters: # ??????????????????
+      #        - AddRequestHeader=Truth, Itcast is freaking awesome! # ?????
+      globalcors: # 全局配置
+        add-to-simple-url-handler-mapping: true # ??options???????
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: # ???????????
+              - "http://localhost:8090"
+              - "http://www.leyou.com"
+            allowedMethods: # ?????ajax?????
+              - "GET"
+              - "POST"
+              - "DELETE"
+              - "PUT"
+              - "OPTIONS"
+            allowedHeaders: "*" # ????????????
+            allowCredentials: true # ??????cookie
+            maxAge: 360000 # ??????????
+
